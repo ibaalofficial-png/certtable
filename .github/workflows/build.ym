@@ -1,0 +1,62 @@
+name: Build CertLedger IPA
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: macos-latest 
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: |
+          sudo xcode-select -s /Applications/Xcode_26.0.1.app || echo "Menggunakan versi Xcode default"
+          xcodebuild -version
+
+      - name: Build App
+        run: |
+          # Masuk ke dalam folder tempat .xcodeproj berada sesuai struktur di gambar
+          cd CertLedger-iOS-GitHubActions
+          
+          echo "Memulai proses build..."
+          
+          xcodebuild \
+            -project "CertLedger.xcodeproj" \
+            -scheme CertLedger \
+            -configuration Release \
+            -sdk iphoneos \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            build
+
+      - name: Create IPA
+        run: |
+          cd CertLedger-iOS-GitHubActions
+          
+          APP_PATH=$(find build -type d -name "CertLedger.app" | head -n 1)
+
+          if [ -z "$APP_PATH" ]; then
+            echo "ERROR: CertLedger.app tidak ditemukan di hasil build!"
+            exit 1
+          fi
+          
+          echo "Aplikasi ditemukan di: $APP_PATH"
+          
+          rm -rf IPA
+          mkdir -p IPA/Payload
+          cp -R "$APP_PATH" IPA/Payload/
+          cd IPA
+          zip -r ../CertLedger.ipa Payload
+
+      - name: Upload IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: CertLedger-IPA
+          path: CertLedger-iOS-GitHubActions/CertLedger.ipa

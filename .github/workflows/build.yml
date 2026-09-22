@@ -8,27 +8,35 @@ on:
 
 jobs:
   build:
-    runs-on: macos-26
+    # Catatan: Pastikan 'macos-26' adalah nama runner yang benar jika Anda menggunakan self-hosted runner. 
+    # Jika menggunakan runner bawaan GitHub, gunakan 'macos-latest'.
+    runs-on: macos-latest 
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Find Xcode Project
-        run: |
-          find . -name "*.xcodeproj" -maxdepth 5 -print
+      # 1. Tambahkan langkah untuk menginstal XcodeGen
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      # 2. Generate file .xcodeproj dari project.yml
+      - name: Generate Xcode Project
+        run: xcodegen generate
 
       - name: Select Xcode
         run: |
-          sudo xcode-select -s /Applications/Xcode_26.0.1.app
+          # Sesuaikan dengan versi Xcode yang tersedia di runner Anda
+          sudo xcode-select -s /Applications/Xcode_26.0.1.app || echo "Xcode path might differ, using default"
           xcodebuild -version
 
       - name: Build App
         run: |
-          PROJECT=$(find . -name "*.xcodeproj" -maxdepth 5 | head -n 1)
+          # Karena XcodeGen sudah dijalankan, nama project-nya pasti CertLedger.xcodeproj
+          PROJECT="CertLedger.xcodeproj"
 
-          if [ -z "$PROJECT" ]; then
-            echo "ERROR: No .xcodeproj found!"
+          if [ ! -d "$PROJECT" ]; then
+            echo "ERROR: CertLedger.xcodeproj tidak ditemukan! Pastikan project.yml ada di root."
             exit 1
           fi
 

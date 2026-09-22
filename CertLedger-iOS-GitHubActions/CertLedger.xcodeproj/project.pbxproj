@@ -1,0 +1,64 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		000000000000000000000101 /* CertLedgerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000201 /* CertLedgerApp.swift */; };
+		000000000000000000000102 /* Sale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000202 /* Sale.swift */; };
+		000000000000000000000103 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000203 /* ContentView.swift */; };
+		000000000000000000000104 /* SalesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000204 /* SalesView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		000000000000000000000301 /* CertLedger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CertLedger.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		000000000000000000000201 /* CertLedgerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertLedgerApp.swift; sourceTree = "<group>"; };
+		000000000000000000000202 /* Sale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sale.swift; sourceTree = "<group>"; };
+		000000000000000000000203 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		000000000000000000000204 /* SalesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalesView.swift; sourceTree = "<group>"; };
+		000000000000000000000205 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		000000000000000000000401 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		000000000000000000000501 = {isa = PBXGroup; children = (000000000000000000000502, 000000000000000000000503, 000000000000000000000504); sourceTree = "<group>"; };
+		000000000000000000000502 /* CertLedger */ = {isa = PBXGroup; children = (000000000000000000000201, 000000000000000000000202, 000000000000000000000203, 000000000000000000000204, 000000000000000000000205); path = CertLedger; sourceTree = "<group>"; };
+		000000000000000000000503 /* Products */ = {isa = PBXGroup; children = (000000000000000000000301); name = Products; sourceTree = "<group>"; };
+		000000000000000000000504 /* Views */ = {isa = PBXGroup; children = (); name = Views; sourceTree = "<group>"; };
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		000000000000000000000601 /* CertLedger */ = {isa = PBXNativeTarget; buildConfigurationList = 000000000000000000000801; buildPhases = (000000000000000000000402, 000000000000000000000401, 000000000000000000000403); buildRules = (); dependencies = (); name = CertLedger; productName = CertLedger; productReference = 000000000000000000000301; productType = "com.apple.product-type.application"; };
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		000000000000000000000701 /* Project object */ = {isa = PBXProject; attributes = {LastUpgradeCheck = 2600; TargetAttributes = {000000000000000000000601 = {CreatedOnToolsVersion = 26.0; };};}; buildConfigurationList = 000000000000000000000802; compatibilityVersion = "Xcode 16.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = (en, Base); mainGroup = 000000000000000000000501; productRefGroup = 000000000000000000000503; projectDirPath = ""; projectRoot = ""; targets = (000000000000000000000601); };
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		000000000000000000000403 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		000000000000000000000402 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (000000000000000000000101,000000000000000000000102,000000000000000000000103,000000000000000000000104); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		000000000000000000000901 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {IPHONEOS_DEPLOYMENT_TARGET = 26.0; PRODUCT_BUNDLE_IDENTIFIER = "com.ibaal.certledger"; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = "1,2";}; name = Debug; };
+		000000000000000000000902 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {IPHONEOS_DEPLOYMENT_TARGET = 26.0; PRODUCT_BUNDLE_IDENTIFIER = "com.ibaal.certledger"; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = "1,2";}; name = Release; };
+		000000000000000000000903 /* Project Debug */ = {isa = XCBuildConfiguration; buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; SWIFT_VERSION = 5.0;}; name = Debug; };
+		000000000000000000000904 /* Project Release */ = {isa = XCBuildConfiguration; buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; SWIFT_VERSION = 5.0;}; name = Release; };
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		000000000000000000000801 /* Target configs */ = {isa = XCConfigurationList; buildConfigurations = (000000000000000000000901,000000000000000000000902); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		000000000000000000000802 /* Project configs */ = {isa = XCConfigurationList; buildConfigurations = (000000000000000000000903,000000000000000000000904); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+/* End XCConfigurationList section */
+	};
+	rootObject = 000000000000000000000701;
+}

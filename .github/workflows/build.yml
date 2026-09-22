@@ -1,0 +1,45 @@
+name: Build CertLedger
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-26
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode 26
+        run: |
+          sudo xcode-select -s /Applications/Xcode_26.0.app
+          xcodebuild -version
+
+      - name: Build iOS App
+        run: |
+          xcodebuild \
+            -project CertLedger.xcodeproj \
+            -scheme CertLedger \
+            -configuration Release \
+            -sdk iphoneos \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            build
+
+      - name: Package App
+        run: |
+          mkdir -p artifact
+          cp -R build/Build/Products/Release-iphoneos/CertLedger.app artifact/
+          cd artifact
+          zip -r CertLedger-unsigned.zip CertLedger.app
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: CertLedger-iOS
+          path: artifact/CertLedger-unsigned.zip

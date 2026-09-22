@@ -19,16 +19,13 @@ jobs:
 
       - name: Generate Xcode Project
         run: |
-          # 1. Cari file project.yml di semua subfolder (kebal huruf besar/kecil)
           SPEC_PATH=$(find . -iname "project.yml" -maxdepth 5 | head -n 1)
           
           if [ -z "$SPEC_PATH" ]; then
             echo "ERROR: project.yml tidak ditemukan di repository!"
-            echo "Pastikan Anda sudah men-commit dan push file project.yml ke GitHub."
             exit 1
           fi
           
-          # 2. Pindah ke direktori tempat project.yml berada dan jalankan xcodegen
           SPEC_DIR=$(dirname "$SPEC_PATH")
           echo "Menjalankan XcodeGen di direktori: $SPEC_DIR"
           
@@ -42,7 +39,6 @@ jobs:
 
       - name: Build App
         run: |
-          # 3. Cari kembali file .xcodeproj yang baru saja di-generate oleh XcodeGen
           PROJECT=$(find . -name "*.xcodeproj" -maxdepth 5 | head -n 1)
 
           if [ -z "$PROJECT" ]; then
@@ -50,9 +46,6 @@ jobs:
             exit 1
           fi
 
-          echo "Menggunakan project: $PROJECT"
-
-          # 4. Build aplikasi (hasil build akan disatukan di folder 'build' di root)
           xcodebuild \
             -project "$PROJECT" \
             -scheme CertLedger \
@@ -67,7 +60,6 @@ jobs:
 
       - name: Create IPA
         run: |
-          # 5. Cari letak pasti dari .app yang berhasil di-build
           APP_PATH=$(find build -type d -name "CertLedger.app" | head -n 1)
 
           if [ -z "$APP_PATH" ]; then
@@ -75,8 +67,6 @@ jobs:
             exit 1
           fi
           
-          echo "Ditemukan App di: $APP_PATH"
-
           rm -rf IPA
           mkdir -p IPA/Payload
 

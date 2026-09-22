@@ -8,40 +8,51 @@ on:
 
 jobs:
   build:
-    # Catatan: Pastikan 'macos-26' adalah nama runner yang benar jika Anda menggunakan self-hosted runner. 
-    # Jika menggunakan runner bawaan GitHub, gunakan 'macos-latest'.
     runs-on: macos-latest 
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 1. Tambahkan langkah untuk menginstal XcodeGen
       - name: Install XcodeGen
         run: brew install xcodegen
 
-      # 2. Generate file .xcodeproj dari project.yml
       - name: Generate Xcode Project
-        run: xcodegen generate
+        run: |
+          # 1. Cari file project.yml di semua subfolder (kebal huruf besar/kecil)
+          SPEC_PATH=$(find . -iname "project.yml" -maxdepth 5 | head -n 1)
+          
+          if [ -z "$SPEC_PATH" ]; then
+            echo "ERROR: project.yml tidak ditemukan di repository!"
+            echo "Pastikan Anda sudah men-commit dan push file project.yml ke GitHub."
+            exit 1
+          fi
+          
+          # 2. Pindah ke direktori tempat project.yml berada dan jalankan xcodegen
+          SPEC_DIR=$(dirname "$SPEC_PATH")
+          echo "Menjalankan XcodeGen di direktori: $SPEC_DIR"
+          
+          cd "$SPEC_DIR"
+          xcodegen generate
 
       - name: Select Xcode
         run: |
-          # Sesuaikan dengan versi Xcode yang tersedia di runner Anda
-          sudo xcode-select -s /Applications/Xcode_26.0.1.app || echo "Xcode path might differ, using default"
+          sudo xcode-select -s /Applications/Xcode_26.0.1.app || echo "Menggunakan versi Xcode default"
           xcodebuild -version
 
       - name: Build App
         run: |
-          # Karena XcodeGen sudah dijalankan, nama project-nya pasti CertLedger.xcodeproj
-          PROJECT="CertLedger.xcodeproj"
+          # 3. Cari kembali file .xcodeproj yang baru saja di-generate oleh XcodeGen
+          PROJECT=$(find . -name "*.xcodeproj" -maxdepth 5 | head -n 1)
 
-          if [ ! -d "$PROJECT" ]; then
-            echo "ERROR: CertLedger.xcodeproj tidak ditemukan! Pastikan project.yml ada di root."
+          if [ -z "$PROJECT" ]; then
+            echo "ERROR: File .xcodeproj tidak ditemukan setelah xcodegen dijalankan!"
             exit 1
           fi
 
-          echo "Using project: $PROJECT"
+          echo "Menggunakan project: $PROJECT"
 
+          # 4. Build aplikasi (hasil build akan disatukan di folder 'build' di root)
           xcodebuild \
             -project "$PROJECT" \
             -scheme CertLedger \
@@ -56,13 +67,15 @@ jobs:
 
       - name: Create IPA
         run: |
-          APP_PATH="build/Build/Products/Release-iphoneos/CertLedger.app"
+          # 5. Cari letak pasti dari .app yang berhasil di-build
+          APP_PATH=$(find build -type d -name "CertLedger.app" | head -n 1)
 
-          if [ ! -d "$APP_PATH" ]; then
-            echo "ERROR: CertLedger.app not found!"
-            find build -name "*.app" -print
+          if [ -z "$APP_PATH" ]; then
+            echo "ERROR: CertLedger.app tidak ditemukan di hasil build!"
             exit 1
           fi
+          
+          echo "Ditemukan App di: $APP_PATH"
 
           rm -rf IPA
           mkdir -p IPA/Payload
